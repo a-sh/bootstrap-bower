@@ -4650,14 +4650,20 @@ angular.module('ui.bootstrap.tooltip', ['ui.bootstrap.position', 'ui.bootstrap.s
                 positionTimeout = $timeout(function() {
                   var ttPosition = $position.positionElements(element, tooltip, ttScope.placement, appendToBody);
                   tooltip.css({ top: ttPosition.top + 'px', left: ttPosition.left + 'px' });
+                  var baseClass = ttPosition.placement.split('-')[0];
+                  var lastPlacementBaseClass = lastPlacement.split('-')[0];
 
-                  if (!tooltip.hasClass(ttPosition.placement.split('-')[0])) {
-                    tooltip.removeClass(lastPlacement.split('-')[0]);
-                    tooltip.addClass(ttPosition.placement.split('-')[0]);
+                  if (lastPlacement !== baseClass) {
+                    tooltip.removeClass(lastPlacementBaseClass);
+                    tooltip.removeClass(lastPlacement);
+                    tooltip.removeClass(options.placementClassPrefix + lastPlacement);
+                  }
+
+                  if (!tooltip.hasClass(baseClass)) {
+                    tooltip.addClass(baseClass);
                   }
 
                   if (!tooltip.hasClass(options.placementClassPrefix + ttPosition.placement)) {
-                    tooltip.removeClass(options.placementClassPrefix + lastPlacement);
                     tooltip.addClass(options.placementClassPrefix + ttPosition.placement);
                   }
 
